@@ -127,9 +127,9 @@ export default {
           zip: this.zip,
         })
         .then((resp) => {
-          if (resp.data.err == "No-Zillow") {
+          if (resp.data.err) {
             alert(
-              "Address not found on lastest Zillow data. Please try another address."
+              resp.data.err
             );
           } else {
             this.dataAPI = resp.data
