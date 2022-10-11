@@ -3,6 +3,7 @@
     <div id="headerTitle">
       <h1>Address Resolver</h1>
       <span>Qualifies: <span id='status' :class="[{'good': qualifies}, {'bad': !qualifies}]" v-if="dataAPI !== false && !loading">{{qualifies}}</span></span>
+      <!-- {{errors}} -->
     </div>
 
     <div id="containRES">
@@ -12,25 +13,29 @@
             <!-- <label for="Street">Street: </label> -->
             <input
               v-model="street"
+              v-validate="'required'"
               name="Street"
               type="text"
               placeholder="Street e.x. 123 main st"
+              required
             />
           </div>
           <div id="zipInput">
             <!-- <label for="Zip">Zip Code: </label> -->
             <input
               v-model="zip"
+              v-validate="'required'"
               name="Zip"
               type="text"
               placeholder="Zip Code"
+              required
             />
           </div>
         </div>
         <div id="buttonWrap">
           <button
             :class="{ disabled: loading }"
-            :disabled="loading"
+            :disabled="loading || (isDisabled)"
             @click="submit"
             class="button-27"
             role="button"
@@ -96,8 +101,20 @@ export default {
       zip: "",
       dataAPI: false,
       loading: false,
-      qualifies: "-"
+      qualifies: "-",
+      isDisabled: true
     };
+  },
+  watch: {
+    'errors.items'(){
+
+     if(this.$validator.errors.items.length == 0){
+        this.isDisabled = false
+     }
+     else{
+      this.isDisabled = true
+     }
+    }
   },
   methods: {
     submit() {
@@ -149,9 +166,16 @@ export default {
         });
     },
   },
+  mounted(){
+    this.$validator.validate();
+  }
 };
 </script>
 <style>
+.button-27:disabled {
+    pointer-events: none;
+    background-color: #898989;
+}
 .good{
   color:#42b983
 }
