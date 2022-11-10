@@ -8,6 +8,9 @@ import VeeValidate from 'vee-validate';
 
 Vue.use(VeeValidate);
 Vue.use(VueAxios, axios)
+Vue.use(VeeValidate, {
+  fieldsBagName: 'vvFields'
+});
 Vue.config.productionTip = false
 
 new Vue({
