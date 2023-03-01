@@ -122,7 +122,7 @@ export default {
       this.loading = true;
     
       axios
-        .post("http://24.199.66.121:3000/search/single", {
+        .post("http://74.207.236.170:3000/search/single", {
           address: this.street,
           zip: this.zip,
         })

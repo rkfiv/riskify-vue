@@ -43,7 +43,7 @@ export default {
     },
     upload() {
       axios
-        .post("http://localhost:3000/search/pullzpid", {
+        .post("http://74.207.236.170:3000/search/pullzpid", {
           ...this.file,
         })
         .then(function (response) {
