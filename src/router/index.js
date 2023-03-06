@@ -11,13 +11,13 @@ const auth = getAuth();
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '*',
-    component: () => import('@/pages/authentication/login.vue')
-  },
+  // {
+  //   path: '*',
+  //   redirect: '/app/search/address'
+  // },
   {
     path: '/',
-    redirect: '/app/search/address',
+    redirect: '/search/address',
   },
   {
     path: '/auth',
@@ -30,10 +30,12 @@ const routes = [
     component: () => import('@/layouts/auth.vue')
   },
   {
-    path: '/app',
-    name: 'app',
+    path: '/dash',
+    name: 'dash',
     children: [
-      { path: '/search/address', component: () => import('@/views/singleAddressSearch.vue') },
+      { path: '/search/address', component: () => import('@/views/singleAddressSearch.vue'),  meta: {
+        requiresAuth: true
+      }},
     ],
     component: () => import('@/layouts/app.vue'),
     meta: {
@@ -52,7 +54,7 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   console.log(to, from)
   if (requiresAuth && !user) {
-    next('/auth/login')
+    next('/login')
   }
   else if (!requiresAuth) {
     next();
