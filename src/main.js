@@ -15,14 +15,9 @@ Vue.config.productionTip = false;
 
 onAuthStateChanged(auth, (user) => {
   // SET DEFAULT PAGE HERE
-
-
     new Vue({
       router,
       store,
       render: (h) => h(App),
     }).$mount("#app");
- 
-
-  
 });

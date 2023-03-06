@@ -6,61 +6,40 @@ import store from "@/store"
 import { getAuth } from "firebase/auth";
 
 const auth = getAuth();
- // null if no user
+// null if no user
 
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  //   path: '/search/bulk',
-  //   name: 'home',
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/bulkAddressSearch.vue')
-  // },
   {
     path: '*',
-    component: () => import('./../pages/authentication/login.vue')
+    component: () => import('@/pages/authentication/login.vue')
   },
   {
     path: '/',
-    redirect: '/search/address',
-    meta:{
+    redirect: '/app/search/address',
+    meta: {
       requiresAuth: true
     }
   },
-
   {
-    path: '/signup',
-    name: 'signup',
-    component: () => import('./../pages/authentication/signup.vue'),
-    meta:{
-      layout: "authLayout"
-    }
+    path: '/auth',
+    name: 'auth',
+    children: [
+      { path: '/login',  component: () => import('@/pages/authentication/login.vue') },
+      { path: '/signup', component: () => import('@/pages/authentication/signup.vue'), },
+      { path: '/forgot', component: () => import('@/pages/authentication/forgotPassword.vue')}
+    ],
+    component: () => import('@/layouts/auth.vue')
   },
   {
-    path: '/login',
-    name: 'login',
-    component: () => import('./../pages/authentication/login.vue'),
-    meta:{
-      layout: "authLayout"
-    }
-  },
-  {
-    path: '/forgot-password',
-    name: 'forgot-password',
-    component: () => import('./../pages/authentication/forgotPassword.vue'),
-    meta:{
-      layout: "authLayout"
-    }
-
-  },
-  {
-    path: '/search/address',
-    name: 'singleAddressSearch',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/singleAddressSearch.vue'),
-    meta:{
+    path: '/app',
+    name: 'app',
+    children: [
+      { path: '/search/address', component: () => import('@/views/singleAddressSearch.vue') },
+    ],
+    component: () => import('@/layouts/app.vue'),
+    meta: {
       requiresAuth: true
     }
   }
@@ -74,11 +53,11 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const user = auth.currentUser;
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-   console.log(to, from)
-  if(requiresAuth && !user){
+  console.log(to, from)
+  if (requiresAuth && !user) {
     next('/login')
   }
-  else if(!requiresAuth){
+  else if (!requiresAuth) {
     next();
   }
   // else if (!requiresAuth && user && to.path != '/search/address') next('/search/address');

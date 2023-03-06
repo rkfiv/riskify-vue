@@ -1,5 +1,5 @@
 <template>
-    <div id="authContainer" >
+    <div v-cloak  id="authContainer" >
         <div id="left">
        </div>
        <div class="authPage">

@@ -1,21 +1,24 @@
 <template>
-  <div id="app">
-    <authContainer v-if="this.$route.meta.layout == 'authLayout'"/>
-
-    <div id="appContainer" v-else>
-      <sideNav></sideNav>
-      <router-view />
+  <div id="app" v-cloak>
+    <div>
+      <!-- <authContainer v-cloak v-if="$route.meta.layout == 'authLayout'" />
+      <appContainer v-cloak  v-else-if="$route.meta.layout !== 'authLayout'" /> -->
+      <router-view></router-view>
     </div>
-
   </div>
 </template>
 <script>
 import sideNav from './components/navigation.vue'
 import authContainer from '@/layouts/auth.vue'
+import appContainer from '@/layouts/app.vue'
 export default {
   components: {
     sideNav,
+    appContainer,
     authContainer
+  },
+  mounted(){
+    console.log(this.$router)
   }
 }
 
@@ -25,6 +28,10 @@ export default {
 /* #4a4238, #4d5359, #508484, #79c99e, #97db4f */
 body {
   margin: 0px;
+}
+
+[v-cloak] {
+  display: none !important;
 }
 
 #appContainer {
