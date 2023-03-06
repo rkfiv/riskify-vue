@@ -33,7 +33,7 @@ export default {
                 .then((userCredential) => {
                     const user = userCredential.user;
                     console.log(user)
-                    this.$router.push('singleAddressSearch')
+                    this.$router.push('/search/address')
                 })
                 .catch((error) => {
                     const errorCode = error.code;

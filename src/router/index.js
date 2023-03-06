@@ -20,20 +20,34 @@ const routes = [
     path: '*',
     component: () => import('./../pages/authentication/login.vue')
   },
+  // {
+  //   path: '/',
+  //   redirect: '/search/address'
+  // },
+
   {
     path: '/signup',
     name: 'signup',
-    component: () => import('./../pages/authentication/signup.vue')
+    component: () => import('./../pages/authentication/signup.vue'),
+    meta:{
+      layout: "authLayout"
+    }
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import('./../pages/authentication/login.vue')
+    component: () => import('./../pages/authentication/login.vue'),
+    meta:{
+      layout: "authLayout"
+    }
   },
   {
     path: '/forgot-password',
     name: 'forgot-password',
     component: () => import('./../pages/authentication/forgotPassword.vue'),
+    meta:{
+      layout: "authLayout"
+    }
 
   },
   {
@@ -57,8 +71,14 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const user = auth.currentUser;
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-  if(requiresAuth && !user && to.path !== '/login') next('/login');
-  else if (!requiresAuth && user && to.path !== '/search/address') next('/search/address');
+   console.log(to, from)
+  if(requiresAuth && !user){
+    next('/login')
+  }
+  else if(!requiresAuth){
+    next();
+  }
+  // else if (!requiresAuth && user && to.path != '/search/address') next('/search/address');
   else next()
 })
 

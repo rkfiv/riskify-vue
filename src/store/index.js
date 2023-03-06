@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import axios from 'axios'
 import {signOut} from 'firebase/auth'
 import {auth}from '@/helpers/firebaseInit'
+import router from '@/router'
 
 Vue.use(Vuex);
 const baseAPI = process.env.VUE_APP_ROOT_API
@@ -76,7 +77,9 @@ export default new Vuex.Store({
         });
     },
     signoutUser({state}){
-      signOut(auth)
+      signOut(auth);
+      router.push('/login')
+      console.log(router)
     }
   },
   modules: {},
