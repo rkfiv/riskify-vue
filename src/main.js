@@ -15,23 +15,14 @@ Vue.config.productionTip = false;
 
 onAuthStateChanged(auth, (user) => {
   // SET DEFAULT PAGE HERE
-  if (user) {
-    const uid = user.uid;
-    store.commit('setAuthStatus', 'loggedIn')
+
+
     new Vue({
       router,
       store,
       render: (h) => h(App),
     }).$mount("#app");
-    // console.log(store, "streo")
-   
-  } else {
-    store.commit('setAuthStatus', 'loggedOut')
-    new Vue({
-      router,
-      store,
-      render: (h) => h(App),
-    }).$mount("#app");
-   
-  }
+ 
+
+  
 });

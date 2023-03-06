@@ -25,27 +25,3 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
-// onAuthStateChanged(auth, (user) => {
-//     // SET DEFAULT PAGE HERE
-//     if (user) {
-//       // User is signed in, see docs for a list of available properties
-//       // https://firebase.google.com/docs/reference/js/firebase.User
-//       const uid = user.uid;
-//     //   switch (router.currentRoute.name){
-//     //     case 'singleAddressSearch':
-//     //         break;
-//     //     default:
-//     //         router.push("/search/address")
-//     //   }
-     
-
-//       // ...
-//     } else {
-//         // switch (router.currentRoute.name){
-//         //     case 'login':
-//         //         break;
-//         //     default:
-//         //         router.push("/login")
-//         //   }
-//     }
-// })

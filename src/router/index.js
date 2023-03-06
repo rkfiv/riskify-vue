@@ -3,7 +3,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from "@/store"
 
+import { getAuth } from "firebase/auth";
 
+const auth = getAuth();
+ // null if no user
 
 Vue.use(VueRouter)
 
@@ -13,6 +16,10 @@ const routes = [
   //   name: 'home',
   //   component: () => import(/* webpackChunkName: "about" */ '../views/bulkAddressSearch.vue')
   // },
+  {
+    path: '*',
+    component: () => import('./../pages/authentication/login.vue')
+  },
   {
     path: '/signup',
     name: 'signup',
@@ -26,7 +33,8 @@ const routes = [
   {
     path: '/forgot-password',
     name: 'forgot-password',
-    component: () => import('./../pages/authentication/forgotPassword.vue')
+    component: () => import('./../pages/authentication/forgotPassword.vue'),
+
   },
   {
     path: '/search/address',
@@ -34,7 +42,10 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/singleAddressSearch.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/singleAddressSearch.vue'),
+    meta:{
+      requiresAuth: true
+    }
   }
 ]
 
@@ -44,24 +55,11 @@ const router = new VueRouter({
   routes
 })
 router.beforeEach((to, from, next) => {
-
-  switch (to.name){
-    case "login":
-      next()
-      break;
-    default:
-      switch (store.getAuthStatus){
-        case "loggedIn":
-          next()
-          break;
-        default:
-          next('/login')
-      }
-  }
-
-
-
- 
+  const user = auth.currentUser;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  if(requiresAuth && !user && to.path !== '/login') next('/login');
+  else if (!requiresAuth && user && to.path !== '/search/address') next('/search/address');
+  else next()
 })
 
 export default router
