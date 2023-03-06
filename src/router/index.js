@@ -22,7 +22,10 @@ const routes = [
   },
   {
     path: '/',
-    redirect: '/search/address'
+    redirect: '/search/address',
+    meta:{
+      requiresAuth: true
+    }
   },
 
   {
