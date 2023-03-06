@@ -20,10 +20,10 @@ const routes = [
     path: '*',
     component: () => import('./../pages/authentication/login.vue')
   },
-  // {
-  //   path: '/',
-  //   redirect: '/search/address'
-  // },
+  {
+    path: '/',
+    redirect: '/search/address'
+  },
 
   {
     path: '/signup',

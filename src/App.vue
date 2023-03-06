@@ -1,9 +1,8 @@
 <template>
-  <div>
-    <div  id="app" v-if="this.$route.meta.layout == 'authLayout'">
-      <router-view class="content" />
-    </div>
-    <div id="app" v-else>
+  <div id="app">
+    <authContainer v-if="this.$route.meta.layout == 'authLayout'"/>
+
+    <div id="appContainer" v-else>
       <sideNav></sideNav>
       <router-view />
     </div>
@@ -12,9 +11,11 @@
 </template>
 <script>
 import sideNav from './components/navigation.vue'
+import authContainer from '@/layouts/auth.vue'
 export default {
   components: {
-    sideNav
+    sideNav,
+    authContainer
   }
 }
 
@@ -26,7 +27,7 @@ body {
   margin: 0px;
 }
 
-#app {
+#appContainer {
   background-color: #f2f2f2;
 }
 
@@ -48,7 +49,7 @@ nav {
   grid-template-rows: 1fr 10fr;
 }
 
-#app {
+#appContainer {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
