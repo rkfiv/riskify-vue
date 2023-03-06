@@ -18,9 +18,6 @@ const routes = [
   {
     path: '/',
     redirect: '/app/search/address',
-    meta: {
-      requiresAuth: true
-    }
   },
   {
     path: '/auth',
