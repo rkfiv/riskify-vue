@@ -14,13 +14,14 @@ export default new Vuex.Store({
       street: '',
       zip: ''
     },
-    realestateData: {
-
-    },
+    realestateData: false,
   },
   getters: {
     getAuthStatus(state){
       return state.authStatus
+    },
+    getPropertyData(state){
+      return state.realestateData
     }
   },
   mutations: {

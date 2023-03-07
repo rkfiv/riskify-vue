@@ -10,13 +10,14 @@
       </button>
     </div>
     </div>
-    <div id="headerTitle">
-      {{ address }}
-
-      <!-- <h1>Address Resolver</h1> -->
-      <!-- <span>Qualifies: <span id='status' :class="[{'good': qualifies}, {'bad': !qualifies}]" v-if="dataAPI !== false && !loading">{{qualifies}}</span></span> -->
-      <!-- {{errors}} -->
+    <div id="topImages">
+      <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/>
+      <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/>
+      <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/>
     </div>
+      
+
+
 
 
   </div>
@@ -24,6 +25,7 @@
 <script>
 // var map;
 import VueGoogleAutocomplete from "vue-google-autocomplete";
+import propertyImages from '@/components/propertyImages.vue'
 // import { Loader } from "@googlemaps/js-api-loader";
 import axios from "axios";
 import { mapActions,mapGetters,mapMutations } from "vuex";
@@ -34,7 +36,8 @@ import { mapActions,mapGetters,mapMutations } from "vuex";
 // });
 export default {
   components: {
-    VueGoogleAutocomplete
+    VueGoogleAutocomplete,
+    propertyImages
   },
   data() {
     return {
@@ -46,6 +49,11 @@ export default {
       isDisabled: true,
       address: ""
     };
+  },
+  computed:{
+    ...mapGetters([
+      'getPropertyData'
+    ])
   },
   watch: {
     'errors.items'() {
@@ -80,6 +88,17 @@ export default {
 };
 </script>
 <style>
+
+
+img#activePropertyImage {
+    width: 100%;
+}
+div#topImages {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    max-width: 100vw;
+    overflow: hidden;
+}
 input#map {
     color: #262626;
     background: #ffffff;
