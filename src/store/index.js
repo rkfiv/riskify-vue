@@ -28,8 +28,7 @@ export default new Vuex.Store({
       state.realestateData = realestateData
     },
     setAddressToSearch(state, address){
-      state.addressToSearch.street =  `${address.street_number} ${address.route}`
-      state.addressToSearch.zip = `${address.postal_code}`
+      state.addressToSearch = address
     },
     setAuthStatus(state, status){
       state.authStatus = status
@@ -37,16 +36,19 @@ export default new Vuex.Store({
   },
   actions: {
     getRealestateDataFromAddress ({state, commit}) {
+      console.log(auth)
       axios
         .post(`${baseAPI}/search/single/v2`, {
-          address: state.addressToSearch.street,
-          zip: state.addressToSearch.zip,
+          addressData: {
+            ...state.addressToSearch
+          },
+          requestedBy: auth.currentUser.uid
         })
         .then((resp) => {
           if (resp.data.err) {
             alert(resp.data.err);
           } else {
-          
+          console.log(resp.data)
           commit('setRealestateData', resp.data)
        
 
