@@ -15,6 +15,11 @@
       <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/>
       <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/>
     </div>
+    <div id="detailsContainer">
+      <div id="detailsContent" v-if="getPropertyData">
+      <span class="detailItem"  v-for="dataPoint, key  in getPropertyData.propertyData.property_detail.prop_common">{{ `${key}: ${dataPoint}` }}</span>
+      </div>
+    </div>
       
 
 
@@ -88,16 +93,29 @@ export default {
 };
 </script>
 <style>
+.about{
+  display: grid;
+  grid-template-areas: "search search"
+                       "images propdetails";
+  grid-template-rows: 65px 13fr;
+  grid-template-columns: 1fr 1fr;
+}
+div#topInput{
+  grid-area: search;
+}
+div#detailsContainer {
+  grid-area: propdetails;
+}
+div#topImages {
+    display: grid;
+    grid-template-rows: 33% 33% 33%;
+    grid-area: images;
+    max-height: calc(100vh - 65px);
+}
 
 
 img#activePropertyImage {
     width: 100%;
-}
-div#topImages {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    max-width: 100vw;
-    overflow: hidden;
 }
 input#map {
     color: #262626;
