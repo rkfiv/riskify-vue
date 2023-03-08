@@ -2,25 +2,27 @@
   <div class="about">
     <div id="topInput">
       <div id="searchWrapper">
-      <vue-google-autocomplete id="map" country="us" classname="form-control" placeholder="Type an address..."
-        v-on:placechanged="getAddressData">
-      </vue-google-autocomplete>
-      <button @click="getRealestateDataFromAddress" class="searchButton">
-        Go
-      </button>
-    </div>
+        <vue-google-autocomplete id="map" country="us" classname="form-control" placeholder="Type an address..."
+          v-on:placechanged="getAddressData">
+        </vue-google-autocomplete>
+        <button @click="getRealestateData" class="searchButton">
+          Go
+        </button>
+      </div>
     </div>
     <div id="topImages">
-      <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/>
-      <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/>
-      <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/>
+      <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos" />
+      <div id="map"></div>
+      <!-- <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/>
+      <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/> -->
     </div>
     <div id="detailsContainer">
       <div id="detailsContent" v-if="getPropertyData">
-      <span class="detailItem"  v-for="dataPoint, key  in getPropertyData.propertyData.property_detail.prop_common">{{ `${key}: ${dataPoint}` }}</span>
+        <span class="detailItem" v-for="dataPoint, key  in getPropertyData.propertyData.property_detail.prop_common">{{
+          `${key}: ${dataPoint}` }}</span>
       </div>
     </div>
-      
+
 
 
 
@@ -31,14 +33,14 @@
 // var map;
 import VueGoogleAutocomplete from "vue-google-autocomplete";
 import propertyImages from '@/components/propertyImages.vue'
-// import { Loader } from "@googlemaps/js-api-loader";
+import { Loader } from "@googlemaps/js-api-loader";
 import axios from "axios";
-import { mapActions,mapGetters,mapMutations } from "vuex";
-// const loader = new Loader({
-//   apiKey: "AIzaSyB2blQxoDxnSYS2AB80m1k8nfLjeS0jtnU",
-//   version: "weekly",
-//   // ...additionalOptions,
-// });
+import { mapActions, mapGetters, mapMutations } from "vuex";
+const loader = new Loader({
+  apiKey: "AIzaSyB2blQxoDxnSYS2AB80m1k8nfLjeS0jtnU",
+  version: "weekly",
+  // ...additionalOptions,
+});
 export default {
   components: {
     VueGoogleAutocomplete,
@@ -55,7 +57,7 @@ export default {
       address: ""
     };
   },
-  computed:{
+  computed: {
     ...mapGetters([
       'getPropertyData'
     ])
@@ -75,15 +77,35 @@ export default {
     ...mapActions([
       'getRealestateDataFromAddress'
     ]),
+    getRealestateData() {
+      console.log(this.address)
+      console.log(this.address.latitude)
+      this.getRealestateDataFromAddress()
+      loader.load().then(() => {
+        var myLatLng = { lat: Number(this.address.latitude), lng: Number(this.address.longitude) };
+        const map = new google.maps.Map(document.getElementById("map"), {
+          center: { ...myLatLng},
+          zoomControl: false,
+          mapTypeControl: false,
+          zoom: 10,
+        });
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+        });
+      });
+    },
     ...mapMutations([
       'setAddressToSearch'
     ]),
     getAddressData: function (addressData, placeResultData, id) {
+      this.address = addressData
       this.setAddressToSearch(addressData);
+     
     },
 
     submit() {
-    
+
     },
   },
   mounted() {
@@ -93,62 +115,70 @@ export default {
 };
 </script>
 <style>
-.about{
-  display: grid;
-  grid-template-areas: "search search"
+.about {
+  /* display: grid; */
+  /* grid-template-areas: "search search"
                        "images propdetails";
   grid-template-rows: 65px 13fr;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr; */
 }
-div#topInput{
+
+div#topInput {
   grid-area: search;
 }
+
 div#detailsContainer {
   grid-area: propdetails;
 }
-div#topImages {
-    display: grid;
-    grid-template-rows: 33% 33% 33%;
-    grid-area: images;
-    max-height: calc(100vh - 65px);
-}
 
+div#topImages {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-area: images;
+  column-gap: 2rem;
+  background: #353535;
+  /* max-height: calc(100vh - 65px); */
+}
 
 img#activePropertyImage {
-    width: 100%;
-}
-input#map {
-    color: #262626;
-    background: #ffffff;
-    padding: 3px;
-    width: 300px;
-    border-radius: 2px 0px 0px 2px;
-    font-weight: bold;
-    padding-left: 10px!important;
-    border-bottom: none;
+  width: 100%;
 }
 
-.searchButton:hover{
+input#map {
+  color: #262626;
+  background: #ffffff;
+  padding: 3px;
+  width: 300px;
+  border-radius: 2px 0px 0px 2px;
+  font-weight: bold;
+  padding-left: 10px !important;
+  border-bottom: none;
+}
+
+.searchButton:hover {
   background-color: #30561e;
 }
 
 div#searchWrapper {
-    display: flex;
-    border: none;
-    outline: none;
-    flex-direction: row;
-    /* row-gap: 18px; */
+  display: flex;
+  border: none;
+  outline: none;
+  flex-direction: row;
+  /* row-gap: 18px; */
 
 }
- .searchButton {
-    border: none;
-    background: #4D8B31;
-    color: white;
-    text-transform: uppercase;
-    font-weight: bolder;
-    width: 90px;
-    border-radius: 0px 2px 2px 0px;
+
+.searchButton {
+  border: none;
+  background: #4D8B31;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bolder;
+  width: 90px;
+  border-radius: 0px 2px 2px 0px;
 }
+
 div#topInput {
   display: flex;
   background: #2a2a2a;
@@ -156,9 +186,11 @@ div#topInput {
   padding: 5px 60px;
   align-items: center;
 }
-div#searchWrapper > * {
-    padding: 10px;
+
+div#searchWrapper>* {
+  padding: 10px;
 }
+
 .button-27:disabled {
   pointer-events: none;
   background-color: #898989;
