@@ -33,9 +33,10 @@
 // var map;
 import VueGoogleAutocomplete from "vue-google-autocomplete";
 import propertyImages from '@/components/propertyImages.vue'
-import { Loader } from "@googlemaps/js-api-loader";
+
 import axios from "axios";
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import { Loader } from "@googlemaps/js-api-loader";
 const loader = new Loader({
   apiKey: "AIzaSyB2blQxoDxnSYS2AB80m1k8nfLjeS0jtnU",
   version: "weekly",
@@ -59,7 +60,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getPropertyData'
+      'getPropertyData',
+      'getAddressToSearch'
     ])
   },
   watch: {
@@ -79,21 +81,24 @@ export default {
     ]),
     getRealestateData() {
       console.log(this.address)
-      console.log(this.address.latitude)
+      console.log(this.getAddressToSearch)
       this.getRealestateDataFromAddress()
-      loader.load().then(() => {
-        var myLatLng = { lat: Number(this.address.latitude), lng: Number(this.address.longitude) };
-        const map = new google.maps.Map(document.getElementById("map"), {
-          center: { ...myLatLng},
-          zoomControl: false,
-          mapTypeControl: false,
-          zoom: 10,
-        });
-        var marker = new google.maps.Marker({
-          position: myLatLng,
-          map: map,
-        });
-      });
+     
+
+        loader.load().then(() => {
+              var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
+              const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) },
+                zoomControl: false, 
+                mapTypeControl: false,
+                zoom: 10,
+              });
+              var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+              });
+            });
+    
     },
     ...mapMutations([
       'setAddressToSearch'

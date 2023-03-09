@@ -22,6 +22,9 @@ export default new Vuex.Store({
     },
     getPropertyData(state){
       return state.realestateData
+    }, 
+    getAddressToSearch(state){
+      return state.addressToSearch
     }
   },
   mutations: {
