@@ -3,11 +3,12 @@
         <div id="imageButtonWrapper">
             <div id="buttons">
                 <button id="propertyImagesBackButton" @click="back()">Back</button>
-            <button id="propertyImagesNextButton" @click="next()">Next</button>
+                  <button id="propertyImagesNextButton" @click="next()">Next</button>
  
             </div>
        </div>
-  <img id="activePropertyImage" :src="activeImageLink" alt="Unloaded Property Image">
+  <img  id="activePropertyImage" :src="activeImageLink" alt="Unloaded Property Image">
+
 
     </div>
 </template>

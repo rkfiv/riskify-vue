@@ -12,9 +12,12 @@ export default new Vuex.Store({
     authStatus: '',
     addressToSearch: {
       street: '',
-      zip: ''
+      zip: '',
+
     },
     realestateData: false,
+    noListingTrigger: false,
+    showLoading: false
   },
   getters: {
     getAuthStatus(state){
@@ -25,6 +28,12 @@ export default new Vuex.Store({
     }, 
     getAddressToSearch(state){
       return state.addressToSearch
+    },
+    getNoListingBoolean(state){
+      return state.noListingTrigger
+    },
+    getLoadingBoolean(state){
+      return state.showLoading
     }
   },
   mutations: {
@@ -36,12 +45,21 @@ export default new Vuex.Store({
     },
     setAuthStatus(state, status){
       state.authStatus = status
+    },
+    setNoListingTrigger(state, triggerBoolean){
+      state.noListingTrigger = triggerBoolean
+    },
+    setShowLoading(state, loadingBoolean){
+      state.showLoading = loadingBoolean
     }
   },
   actions: {
     getRealestateDataFromAddress ({state, commit}) {
-      console.log(auth)
-      axios
+      commit("setNoListingTrigger", false)
+      commit("setRealestateData", false)
+      commit("setShowLoading", true)
+      return new Promise((resolve, reject)=>{
+        axios
         .post(`${baseAPI}/search/single/v2`, {
           addressData: {
             ...state.addressToSearch
@@ -49,38 +67,22 @@ export default new Vuex.Store({
           requestedBy: auth.currentUser.uid
         })
         .then((resp) => {
-          if (resp.data.err) {
-            alert(resp.data.err);
+          if (resp.data.error) {
+           commit("setNoListingTrigger", true)
+           commit('setRealestateData', false)
+          commit("setShowLoading", false)
+            
           } else {
+      
           console.log(resp.data)
           commit('setRealestateData', resp.data)
-       
-
-          //   loader.load().then(() => {
-          //     var myLatLng = { lat: this.dataAPI.lat, lng: this.dataAPI.lon };
-          //     const map = new google.maps.Map(document.getElementById("map"), {
-          //       center: { lat: this.dataAPI.lat, lng: this.dataAPI.lon },
-          //       zoomControl: false,
-          //       mapTypeControl: false,
-          //       zoom: 10,
-          //     });
-          //     var marker = new google.maps.Marker({
-          //       position: myLatLng,
-          //       map: map,
-          //     });
-          //   });
+          commit("setShowLoading", false)
+          commit("setNoListingTrigger", false)
+          resolve()
           }
-
-          // this.loading = false;
-          // if (
-          //   parseInt(this.dataAPI["Year Built"]) >= 2006 &&
-          //   parseInt(this.dataAPI["Distance To Coast"]) >= 4
-          // ) {
-          //   this.qualifies = true;
-          // } else {
-          //   this.qualifies = false;
-          // }
         });
+      })
+
     },
     signoutUser({state}){
       signOut(auth);

@@ -11,28 +11,48 @@
         </button>
       </div>
     </div>
-    <div v-if="getPropertyData" class="card">
+    <div v-if="getPropertyData && !getNoListingBoolean" class="card">
       <div id="topImages" class="card-body">
         <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos" />
         <div id="map"></div>
         <div id="satMap"></div>
       </div>
     </div>
-    <div v-if="getPropertyData" id="detailsContainer">
+    <div v-if="getPropertyData && !getNoListingBoolean" id="detailsContainer">
       <div id="detailsContent" v-if="getPropertyData">
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Property Details:</h5>
-            <div id="propertyDetails">
+            <ul class="nav nav-tabs">
+  <li @click="activeTab = 'propertyDetails'" class="nav-item">
+    <a class="nav-link " :class="{'active': activeTab == 'propertyDetails'}" aria-current="page" href="#">Property Details</a>
+  </li>
+  <li @click="activeTab = 'propertyPublicRecords'"  class="nav-item">
+    <a class="nav-link" :class="{'active': activeTab == 'propertyPublicRecords'}" href="#">Public Records</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">Permit Search</a>
+  </li>
+ 
+</ul>
+        <transition   name="fade" mode="out-in"> 
+          <div key="propertyDetails" v-if="activeTab == 'propertyDetails'" id="propertyDetails">
               <div id="leftPropertyDetails">
                 <span class="detailItem card-text">
                   <span class="card-subtitle fw-semibold">Market Value Estimate:</span>
-                  <div>$ {{ propCommon.price }}</div>
+                $ {{ propCommon.price }}
                 </span>
                 <span class="detailItem card-text">
                   <span class="card-subtitle fw-semibold">Market Status:</span>
-                  <div> {{ propCommon.status }}</div>
+                 {{ propCommon.status }}
+                </span>
+                <span class="detailItem card-text">
+                  <span class="card-subtitle fw-semibold">Neighborhood:</span>
+               {{ propDetails.neighborhood }}
+                </span>
+                <span class="detailItem card-text">
+                  <span class="card-subtitle fw-semibold">Flood Zone:</span>
+                 {{ propDetails.flood.fema_zone }}
                 </span>
               </div>
               <div id="rightPropertyDetail">
@@ -43,12 +63,35 @@
                   <span class="card-subtitle fw-semibold">Square Feet:</span> {{ propCommon.sqft }}
                 </span>
 
+                <span class="detailItem card-text">
+                  <span class="card-subtitle fw-semibold">Beds:</span> {{ propCommon.bed }}
+                </span>
+                <span class="detailItem card-text">
+                  <span class="card-subtitle fw-semibold">Baths:</span> {{ propCommon.baths_full_calc }}
+                </span>
+
               </div>
 
 
 
 
             </div>
+            <div key="propertyPublicRecords" v-else-if="activeTab == 'propertyPublicRecords'" id="propertyDetails">
+              <div id="leftPropertyDetails">
+
+                <span class="detailItem card-text">
+                  <div v-for="publicRecord, key in propDetails.public_records[0]" class="card-subtitle fw-semibold">{{`${key}: ${publicRecord}`}}<div></div></div>
+                    
+                </span>
+              </div>
+         
+
+
+
+
+            </div>
+
+        </transition>
 
           </div>
         </div>
@@ -71,7 +114,7 @@
       </div>
 
     </div>
-    <div v-if="!getPropertyData" id="loadingAnimation" class="container">
+    <div v-if="!getPropertyData && getLoadingBoolean" id="loadingAnimation" class="container">
 
       <div class="h1Container">
 
@@ -246,7 +289,9 @@
 
     </div>
 
-
+    <div v-if="getNoListingBoolean" id="noListingFound">
+      Uh Oh, It looks like this may not be a residential address -or- riskify has yet to index that property, check back later!
+    </div>
 
 
 
@@ -279,14 +324,16 @@ export default {
       loading: false,
       qualifies: "-",
       isDisabled: true,
-      address: ""
+      address: "",
+      activeTab: "propertyDetails"
     };
   },
   computed: {
     ...mapGetters([
       'getPropertyData',
-      'getAddressToSearch'
-
+      'getAddressToSearch',
+      'getNoListingBoolean',
+      'getLoadingBoolean'
     ]),
     propCommon() {
       return this.getPropertyData.propertyData.property_detail.prop_common
@@ -311,13 +358,12 @@ export default {
       'getRealestateDataFromAddress'
     ]),
     getRealestateData() {
-      console.log(this.address)
-      console.log(this.getAddressToSearch)
-      this.getRealestateDataFromAddress()
 
-
-
-      var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
+      this.getRealestateDataFromAddress().then((res)=>{
+      
+        if(this.getPropertyData){
+          
+        var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
       const map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) },
         zoomControl: false,
@@ -340,6 +386,15 @@ export default {
         position: myLatLng,
         map: satMap,
       });
+      }
+      }).catch(err=>{
+        console.log(err)
+
+      })
+
+
+
+
 
     },
     ...mapMutations([
@@ -363,6 +418,23 @@ export default {
 };
 </script>
 <style lang="scss">
+
+div#propertyDetails {
+    padding: 30px;
+    margin: 0 auto;
+    text-align: center;
+}
+div#leftPropertyDetails {
+    text-align: left;
+}
+
+div#noListingFound {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    color: white;
+}
 div#propertyDetails>*{
   display: grid;
   row-gap: 10px;
@@ -855,5 +927,11 @@ ul#dataList {
 .button-27:active {
   box-shadow: none;
   transform: translateY(0);
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
