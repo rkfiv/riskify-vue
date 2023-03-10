@@ -11,19 +11,241 @@
         </button>
       </div>
     </div>
-    <div id="topImages">
-      <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos" />
-      <div id="map"></div>
-      <div id="satMap"></div>
-      <!-- <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/>
-      <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/> -->
-    </div>
-    <div id="detailsContainer">
-      <div id="detailsContent" v-if="getPropertyData">
-        <span class="detailItem" v-for="dataPoint, key  in getPropertyData.propertyData.property_detail.prop_common">{{
-          `${key}: ${dataPoint}` }}</span>
+    <div v-if="getPropertyData" class="card">
+      <div id="topImages" class="card-body">
+        <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos" />
+        <div id="map"></div>
+        <div id="satMap"></div>
       </div>
     </div>
+    <div v-if="getPropertyData" id="detailsContainer">
+      <div id="detailsContent" v-if="getPropertyData">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Property Details:</h5>
+            <div id="propertyDetails">
+              <div id="leftPropertyDetails">
+                <span class="detailItem card-text">
+                  <span class="card-subtitle fw-semibold">Market Value Estimate:</span>
+                  <div>$ {{ propCommon.price }}</div>
+                </span>
+                <span class="detailItem card-text">
+                  <span class="card-subtitle fw-semibold">Market Status:</span>
+                  <div> {{ propCommon.status }}</div>
+                </span>
+              </div>
+              <div id="rightPropertyDetail">
+                <span class="detailItem card-text">
+                  <span class="card-subtitle fw-semibold">Year Built:</span> {{ propCommon.year_built }}
+                </span>
+                <span class="detailItem card-text">
+                  <span class="card-subtitle fw-semibold">Square Feet:</span> {{ propCommon.sqft }}
+                </span>
+
+              </div>
+
+
+
+
+            </div>
+
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">About Property:</h5>
+            <div id="propertyDetails2">
+        
+              <span class="detailItem card-text">
+      
+                  <div v-html="propDetails.property_overview"> </div>
+                </span>
+
+
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div v-if="!getPropertyData" id="loadingAnimation" class="container">
+
+      <div class="h1Container">
+
+        <div class="cube h1 w1 l1">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h1 w1 l2">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h1 w1 l3">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h1 w2 l1">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h1 w2 l2">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h1 w2 l3">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h1 w3 l1">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h1 w3 l2">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h1 w3 l3">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+      </div>
+
+      <div class="h2Container">
+
+        <div class="cube h2 w1 l1">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h2 w1 l2">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h2 w1 l3">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h2 w2 l1">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h2 w2 l2">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h2 w2 l3">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h2 w3 l1">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h2 w3 l2">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h2 w3 l3">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+      </div>
+
+      <div class="h3Container">
+
+        <div class="cube h3 w1 l1">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h3 w1 l2">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h3 w1 l3">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h3 w2 l1">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h3 w2 l2">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h3 w2 l3">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h3 w3 l1">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h3 w3 l2">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+
+        <div class="cube h3 w3 l3">
+          <div class="face top"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+      </div>
+
+    </div>
+
 
 
 
@@ -64,7 +286,14 @@ export default {
     ...mapGetters([
       'getPropertyData',
       'getAddressToSearch'
-    ])
+
+    ]),
+    propCommon() {
+      return this.getPropertyData.propertyData.property_detail.prop_common
+    },
+    propDetails() {
+      return this.getPropertyData.propertyData.property_detail
+    }
   },
   watch: {
     'errors.items'() {
@@ -85,32 +314,32 @@ export default {
       console.log(this.address)
       console.log(this.getAddressToSearch)
       this.getRealestateDataFromAddress()
-     
 
-   
-              var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
-              const map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) },
-                zoomControl: false, 
-                mapTypeControl: false,
-                zoom: 10,
-              });
-              var marker = new google.maps.Marker({
-                position: myLatLng,
-                map: map,
-              });
-              var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
-              const satMap = new google.maps.Map(document.getElementById("satMap"), {
-                center: { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) },
-                zoomControl: false, 
-                mapTypeControl: false,
-                zoom: 20,
-                mapTypeId: 'satellite'
-              });
-              var marker = new google.maps.Marker({
-                position: myLatLng,
-                map: satMap,
-              });
+
+
+      var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) },
+        zoomControl: false,
+        mapTypeControl: false,
+        zoom: 10,
+      });
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+      });
+      var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
+      const satMap = new google.maps.Map(document.getElementById("satMap"), {
+        center: { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) },
+        zoomControl: false,
+        mapTypeControl: false,
+        zoom: 20,
+        mapTypeId: 'satellite'
+      });
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: satMap,
+      });
 
     },
     ...mapMutations([
@@ -119,7 +348,7 @@ export default {
     getAddressData: function (addressData, placeResultData, id) {
       this.address = addressData
       this.setAddressToSearch(addressData);
-     
+
     },
 
     submit() {
@@ -133,7 +362,137 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+div#propertyDetails>*{
+  display: grid;
+  row-gap: 10px;
+}
+.about {
+  /* display: grid; */
+  background: #323233;
+}
+
+$background: #222;
+$leftFace: #D53A33;
+$rightFace: #E79C10;
+$topFace: #1d9099;
+$scale: 1;
+$duration: 3s;
+$timingFunction: ease;
+
+#loadingAnimation {
+  display: flex;
+  min-height: 100%;
+  min-width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  position: relative;
+  height: 100px;
+  width: 86px;
+  transform:scale(#{$scale * .5});
+}
+
+.cube {
+  position: absolute;
+  width: 86px;
+  height: 100px;
+}
+
+.right {
+  background: $rightFace;
+  transform: rotate(-30deg) skewX(-30deg) translate(49px, 65px) scaleY(0.86);
+}
+
+.left {
+  background: $leftFace;
+  transform: rotate(90deg) skewX(-30deg) scaleY(0.86) translate(25px, -50px);
+}
+.span.detailItem {
+    display: block;
+}
+.top {
+  background: $topFace;
+  transform: rotate(210deg) skew(-30deg) translate(-75px, -22px) scaleY(0.86);
+  z-index: 2;
+}
+
+.face {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  transform-origin: 0 0;
+}
+
+@mixin slice($h, $w, $l) {
+  .h#{$h}.w#{$w}.l#{$l} {
+    z-index: (-#{$h});
+    animation-name: h#{$h}w#{$w}l#{$l};
+    animation-timing-function: $timingFunction;
+    animation-duration: $duration;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes h#{$h}w#{$w}l#{$l} {
+    0% {
+      transform: translate(($w * -50% - 50%) + ($l * 50% + 50%), ($h * 50 - 200%) + ($w * 25% - 25%) + ($l * 25 + 25%));
+    }
+
+    14% {
+      transform: translate(($w * -50% - 50%) + ($l * 100% - 50%), ($h * 50 - 200%) + ($w * 25% - 25%) + ($l * 50 - 25%));
+    }
+
+    28% {
+      transform: translate(($w * -100% + 50%) + ($l * 100% - 50%), ($h * 50 - 200%) + ($w * 50% - 75%) + ($l * 50 - 25%));
+    }
+
+    43% {
+      transform: translate(($w * -100% - 100%) + ($l * 100% + 100%), ($h * 100 - 400%) + ($w * 50% - 50%) + ($l * 50 + 50%));
+    }
+
+    57% {
+      transform: translate(($w * -100% - 100%) + ($l * 50% + 200%), ($h * 100 - 400%) + ($w * 50% - 50%) + ($l * 25 + 100%));
+    }
+
+    71% {
+      transform: translate(($w * -50% - 200%) + ($l * 50% + 200%), ($h * 100 - 375%) + ($w * 25% - 25%) + ($l * 25 + 100%));
+    }
+
+    85% {
+      transform: translate(($w * -50% - 50%) + ($l * 50% + 50%), ($h * 50 - 200%) + ($w * 25% - 25%) + ($l * 25 + 25%));
+    }
+
+    100% {
+      transform: translate(($w * -50% - 50%) + ($l * 50% + 50%), ($h * 50 - 200%) + ($w * 25% - 25%) + ($l * 25 + 25%));
+    }
+  }
+}
+
+@mixin generateSlice() {
+  @for $i from 1 to 4 {
+    @for $j from 1 to 4 {
+      @for $k from 1 to 4 {
+        @include slice($i, $j, $k);
+      }
+    }
+  }
+}
+
+@include generateSlice()
+</style>
 <style>
+div#propertyDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+div#detailsContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 .about {
   /* display: grid; */
   /* grid-template-areas: "search search"
@@ -150,23 +509,40 @@ div#detailsContainer {
   grid-area: propdetails;
 }
 
+div#topImages:first-child>*>* {
+  min-height: 275px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+
+div#topImages:last-child>* {
+  min-height: 275px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
 div#topImages {
-    padding: 1rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-area: images;
-    min-height: 275px;
-    -moz-column-gap: 2rem;
-    column-gap: rem;
-    background: #0d0d0d;
-    /* max-height: calc(100vh - 65px); */
+  padding: 0px;
+  display: grid;
+  border-radius: 5px;
+
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-area: images;
+  min-height: 275px;
+  /* max-height: calc(100vh - 65px); */
+}
+
+.card {
+  margin: 30px;
 }
 
 img#activePropertyImage {
   width: 100%;
 }
+
 img#activePropertyImage {
-    min-height: 275px;
+  min-height: 275px;
 }
 
 input#autoComplete {
@@ -479,4 +855,5 @@ ul#dataList {
 .button-27:active {
   box-shadow: none;
   transform: translateY(0);
-}</style>
+}
+</style>
