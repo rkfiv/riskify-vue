@@ -1,5 +1,6 @@
 <template>
   <div class="about">
+    
     <div id="topInput">
       <div id="searchWrapper">
         <vue-google-autocomplete id="autoComplete" country="us" classname="form-control" placeholder="Type an address..."
@@ -11,6 +12,7 @@
         </button>
       </div>
     </div>
+
     <div v-if="getPropertyData && !getNoListingBoolean" class="card">
       <div id="topImages" class="card-body">
         <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos" />
@@ -24,74 +26,77 @@
         <div class="card">
           <div class="card-body">
             <ul class="nav nav-tabs">
-  <li @click="activeTab = 'propertyDetails'" class="nav-item">
-    <a class="nav-link " :class="{'active': activeTab == 'propertyDetails'}" aria-current="page" href="#">Property Details</a>
-  </li>
-  <li @click="activeTab = 'propertyPublicRecords'"  class="nav-item">
-    <a class="nav-link" :class="{'active': activeTab == 'propertyPublicRecords'}" href="#">Public Records</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link disabled" href="#">Permit Search</a>
-  </li>
- 
-</ul>
-        <transition   name="fade" mode="out-in"> 
-          <div key="propertyDetails" v-if="activeTab == 'propertyDetails'" id="propertyDetails">
-              <div id="leftPropertyDetails">
-                <span class="detailItem card-text">
-                  <span class="card-subtitle fw-semibold">Market Value Estimate:</span>
-                $ {{ propCommon.price }}
-                </span>
-                <span class="detailItem card-text">
-                  <span class="card-subtitle fw-semibold">Market Status:</span>
-                 {{ propCommon.status }}
-                </span>
-                <span class="detailItem card-text">
-                  <span class="card-subtitle fw-semibold">Neighborhood:</span>
-               {{ propDetails.neighborhood }}
-                </span>
-                <span class="detailItem card-text">
-                  <span class="card-subtitle fw-semibold">Flood Zone:</span>
-                 {{ propDetails.flood.fema_zone }}
-                </span>
+              <li @click="activeTab = 'propertyDetails'" class="nav-item">
+                <a class="nav-link " :class="{ 'active': activeTab == 'propertyDetails' }" aria-current="page"
+                  href="#">Property Details</a>
+              </li>
+              <li @click="activeTab = 'propertyPublicRecords'" class="nav-item">
+                <a class="nav-link" :class="{ 'active': activeTab == 'propertyPublicRecords' }" href="#">Public Records</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#">Permit Search</a>
+              </li>
+
+            </ul>
+            <transition name="fade" mode="out-in">
+              <div key="propertyDetails" v-if="activeTab == 'propertyDetails'" id="propertyDetails">
+                <div id="leftPropertyDetails">
+                  <span class="detailItem card-text">
+                    <span class="card-subtitle fw-semibold">Market Value Estimate:</span>
+                    $ {{ propCommon.price }}
+                  </span>
+                  <span class="detailItem card-text">
+                    <span class="card-subtitle fw-semibold">Market Status:</span>
+                    {{ propCommon.status }}
+                  </span>
+                  <span class="detailItem card-text">
+                    <span class="card-subtitle fw-semibold">Neighborhood:</span>
+                    {{ propDetails.neighborhood }}
+                  </span>
+                  <span class="detailItem card-text">
+                    <span class="card-subtitle fw-semibold">Flood Zone:</span>
+                    {{ propDetails.flood.fema_zone }}
+                  </span>
+                </div>
+                <div id="rightPropertyDetail">
+                  <span class="detailItem card-text">
+                    <span class="card-subtitle fw-semibold">Year Built:</span> {{ propCommon.year_built }}
+                  </span>
+                  <span class="detailItem card-text">
+                    <span class="card-subtitle fw-semibold">Square Feet:</span> {{ propCommon.sqft }}
+                  </span>
+
+                  <span class="detailItem card-text">
+                    <span class="card-subtitle fw-semibold">Beds:</span> {{ propCommon.bed }}
+                  </span>
+                  <span class="detailItem card-text">
+                    <span class="card-subtitle fw-semibold">Baths:</span> {{ propCommon.baths_full_calc }}
+                  </span>
+
+                </div>
+
+
+
+
               </div>
-              <div id="rightPropertyDetail">
-                <span class="detailItem card-text">
-                  <span class="card-subtitle fw-semibold">Year Built:</span> {{ propCommon.year_built }}
-                </span>
-                <span class="detailItem card-text">
-                  <span class="card-subtitle fw-semibold">Square Feet:</span> {{ propCommon.sqft }}
-                </span>
+              <div key="propertyPublicRecords" v-else-if="activeTab == 'propertyPublicRecords'" id="propertyDetails">
+                <div id="leftPropertyDetails">
 
-                <span class="detailItem card-text">
-                  <span class="card-subtitle fw-semibold">Beds:</span> {{ propCommon.bed }}
-                </span>
-                <span class="detailItem card-text">
-                  <span class="card-subtitle fw-semibold">Baths:</span> {{ propCommon.baths_full_calc }}
-                </span>
+                  <span class="detailItem card-text">
+                    <div v-for="publicRecord, key in propDetails.public_records[0]" class="card-subtitle fw-semibold">
+                      {{ `${key}: ${publicRecord}` }}<div></div>
+                    </div>
+
+                  </span>
+                </div>
+
+
+
+
 
               </div>
 
-
-
-
-            </div>
-            <div key="propertyPublicRecords" v-else-if="activeTab == 'propertyPublicRecords'" id="propertyDetails">
-              <div id="leftPropertyDetails">
-
-                <span class="detailItem card-text">
-                  <div v-for="publicRecord, key in propDetails.public_records[0]" class="card-subtitle fw-semibold">{{`${key}: ${publicRecord}`}}<div></div></div>
-                    
-                </span>
-              </div>
-         
-
-
-
-
-            </div>
-
-        </transition>
+            </transition>
 
           </div>
         </div>
@@ -99,11 +104,11 @@
           <div class="card-body">
             <h5 class="card-title">About Property:</h5>
             <div id="propertyDetails2">
-        
+
               <span class="detailItem card-text">
-      
-                  <div v-html="propDetails.property_overview"> </div>
-                </span>
+
+                <div v-html="propDetails.property_overview"> </div>
+              </span>
 
 
 
@@ -114,186 +119,9 @@
       </div>
 
     </div>
-    <div v-if="!getPropertyData && getLoadingBoolean" id="loadingAnimation" class="container">
 
-      <div class="h1Container">
-
-        <div class="cube h1 w1 l1">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h1 w1 l2">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h1 w1 l3">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h1 w2 l1">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h1 w2 l2">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h1 w2 l3">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h1 w3 l1">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h1 w3 l2">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h1 w3 l3">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-      </div>
-
-      <div class="h2Container">
-
-        <div class="cube h2 w1 l1">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h2 w1 l2">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h2 w1 l3">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h2 w2 l1">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h2 w2 l2">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h2 w2 l3">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h2 w3 l1">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h2 w3 l2">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h2 w3 l3">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-      </div>
-
-      <div class="h3Container">
-
-        <div class="cube h3 w1 l1">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h3 w1 l2">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h3 w1 l3">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h3 w2 l1">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h3 w2 l2">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h3 w2 l3">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h3 w3 l1">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h3 w3 l2">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-
-        <div class="cube h3 w3 l3">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-        </div>
-      </div>
-
-    </div>
-
-    <div v-if="getNoListingBoolean" id="noListingFound">
-      Uh Oh, It looks like this may not be a residential address -or- riskify has yet to index that property, check back later!
-    </div>
-
-
+    <loading-component v-if="!getPropertyData && getLoadingBoolean"/>
+    <not-found-component v-if="getNoListingBoolean" />
 
 
   </div>
@@ -301,9 +129,9 @@
 <script>
 // var map;
 import VueGoogleAutocomplete from "vue-google-autocomplete";
-import propertyImages from '@/components/propertyImages.vue'
-
-import axios from "axios";
+import propertyImages from '@/components/propertyImages.vue';
+import notFoundComponent from '@/components/Address_Search/Address_Not_Found.vue';
+import loadingComponent from '@/components/UI/Loading.vue'
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import { Loader } from "@googlemaps/js-api-loader";
 const loader = new Loader({
@@ -314,7 +142,9 @@ const loader = new Loader({
 export default {
   components: {
     VueGoogleAutocomplete,
-    propertyImages
+    propertyImages,
+    notFoundComponent,
+    loadingComponent
   },
   data() {
     return {
@@ -359,35 +189,35 @@ export default {
     ]),
     getRealestateData() {
 
-      this.getRealestateDataFromAddress().then((res)=>{
-      
-        if(this.getPropertyData){
-          
-        var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
-      const map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) },
-        zoomControl: false,
-        mapTypeControl: false,
-        zoom: 10,
-      });
-      var marker = new google.maps.Marker({
-        position: myLatLng,
-        map: map,
-      });
-      var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
-      const satMap = new google.maps.Map(document.getElementById("satMap"), {
-        center: { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) },
-        zoomControl: false,
-        mapTypeControl: false,
-        zoom: 20,
-        mapTypeId: 'satellite'
-      });
-      var marker = new google.maps.Marker({
-        position: myLatLng,
-        map: satMap,
-      });
-      }
-      }).catch(err=>{
+      this.getRealestateDataFromAddress().then((res) => {
+
+        if (this.getPropertyData) {
+
+          var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
+          const map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) },
+            zoomControl: false,
+            mapTypeControl: false,
+            zoom: 10,
+          });
+          var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+          });
+          var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
+          const satMap = new google.maps.Map(document.getElementById("satMap"), {
+            center: { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) },
+            zoomControl: false,
+            mapTypeControl: false,
+            zoom: 20,
+            mapTypeId: 'satellite'
+          });
+          var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: satMap,
+          });
+        }
+      }).catch(err => {
         console.log(err)
 
       })
@@ -418,27 +248,29 @@ export default {
 };
 </script>
 <style lang="scss">
-
 div#propertyDetails {
-    padding: 30px;
-    margin: 0 auto;
-    text-align: center;
+  padding: 30px;
+  margin: 0 auto;
+  text-align: center;
 }
+
 div#leftPropertyDetails {
-    text-align: left;
+  text-align: left;
 }
 
 div#noListingFound {
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    min-height: 100%;
-    color: white;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+  color: white;
 }
-div#propertyDetails>*{
+
+div#propertyDetails>* {
   display: grid;
   row-gap: 10px;
 }
+
 .about {
   /* display: grid; */
   background: #323233;
@@ -482,9 +314,11 @@ $timingFunction: ease;
   background: $leftFace;
   transform: rotate(90deg) skewX(-30deg) scaleY(0.86) translate(25px, -50px);
 }
+
 .span.detailItem {
-    display: block;
+  display: block;
 }
+
 .top {
   background: $topFace;
   transform: rotate(210deg) skew(-30deg) translate(-75px, -22px) scaleY(0.86);
@@ -928,10 +762,16 @@ ul#dataList {
   box-shadow: none;
   transform: translateY(0);
 }
-.fade-enter-active, .fade-leave-active {
+
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity .5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+
+.fade-enter,
+.fade-leave-to
+
+/* .fade-leave-active below version 2.1.8 */
+  {
   opacity: 0;
-}
-</style>
+}</style>
