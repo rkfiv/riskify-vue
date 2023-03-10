@@ -2,9 +2,10 @@
   <div class="about">
     <div id="topInput">
       <div id="searchWrapper">
-        <vue-google-autocomplete id="map" country="us" classname="form-control" placeholder="Type an address..."
+        <vue-google-autocomplete id="autoComplete" country="us" classname="form-control" placeholder="Type an address..."
           v-on:placechanged="getAddressData">
         </vue-google-autocomplete>
+        <!-- <div id="addressSearch"></div> -->
         <button @click="getRealestateData" class="searchButton">
           Go
         </button>
@@ -13,6 +14,7 @@
     <div id="topImages">
       <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos" />
       <div id="map"></div>
+      <div id="satMap"></div>
       <!-- <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/>
       <property-images v-if="getPropertyData" :propImages="getPropertyData.propertyData.property_detail.photos"/> -->
     </div>
@@ -85,7 +87,7 @@ export default {
       this.getRealestateDataFromAddress()
      
 
-        loader.load().then(() => {
+   
               var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
               const map = new google.maps.Map(document.getElementById("map"), {
                 center: { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) },
@@ -97,8 +99,19 @@ export default {
                 position: myLatLng,
                 map: map,
               });
-            });
-    
+              var myLatLng = { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) };
+              const satMap = new google.maps.Map(document.getElementById("satMap"), {
+                center: { lat: Number(this.getAddressToSearch.latitude), lng: Number(this.getAddressToSearch.longitude) },
+                zoomControl: false, 
+                mapTypeControl: false,
+                zoom: 20,
+                mapTypeId: 'satellite'
+              });
+              var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: satMap,
+              });
+
     },
     ...mapMutations([
       'setAddressToSearch'
@@ -116,6 +129,7 @@ export default {
   mounted() {
     this.$validator.validate();
     console.log()
+
   }
 };
 </script>
@@ -137,20 +151,25 @@ div#detailsContainer {
 }
 
 div#topImages {
-  padding: 2rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-area: images;
-  column-gap: 2rem;
-  background: #353535;
-  /* max-height: calc(100vh - 65px); */
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-area: images;
+    min-height: 275px;
+    -moz-column-gap: 2rem;
+    column-gap: rem;
+    background: #0d0d0d;
+    /* max-height: calc(100vh - 65px); */
 }
 
 img#activePropertyImage {
   width: 100%;
 }
+img#activePropertyImage {
+    min-height: 275px;
+}
 
-input#map {
+input#autoComplete {
   color: #262626;
   background: #ffffff;
   padding: 3px;
